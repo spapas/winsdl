@@ -38,7 +38,7 @@ int main(int argc, char** args) {
 	}
 
 	// Fill the window with a white rectangle
-	SDL_FillRect( winSurface, NULL, SDL_MapRGB( winSurface->format, 255, 255, 255 ) );
+	SDL_FillRect( winSurface, NULL, SDL_MapRGB( winSurface->format, 111, 222, 255 ) );
 
 	// Update the window display
 	SDL_UpdateWindowSurface( window );

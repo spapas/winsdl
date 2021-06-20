@@ -1,57 +1,59 @@
 #include <stdio.h>
 #include <SDL.h>
-//#undef main
 
 int main(int argc, char** args) {
-
 	SDL_Surface* winSurface = NULL;
 	SDL_Window* window = NULL;
+    //Main loop flag
+    int quit = 0;
 
-	// Initialize SDL. SDL_Init will return -1 if it fails.
+    //Event handler
+    SDL_Event e;
+
 	if ( SDL_Init( SDL_INIT_EVERYTHING ) < 0 ) {
 		printf("Error initializing SDL: %s\n", SDL_GetError());
-		system("pause");
-		// End the program
 		return 1;
 	} 
 
-	// Create our window
 	window = SDL_CreateWindow( "Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN );
-
-	// Make sure creating the window succeeded
 	if ( !window ) {
 		printf("Error creating window: %s\n", SDL_GetError());
-		system("pause");
-		// End the program
 		return 1;
 	}
 
-	// Get the surface from the window
 	winSurface = SDL_GetWindowSurface( window );
-
-	// Make sure getting the surface succeeded
 	if ( !winSurface ) {
 		printf( "Error getting surface: %s\n", SDL_GetError());
-		system("pause");
-		// End the program
 		return 1;
 	}
 
-	// Fill the window with a white rectangle
 	SDL_FillRect( winSurface, NULL, SDL_MapRGB( winSurface->format, 111, 222, 255 ) );
-
-	// Update the window display
 	SDL_UpdateWindowSurface( window );
 
-	// Wait
-	system("pause");
+	while( !quit )
+            {
+                while( SDL_PollEvent( &e ) != 0 )
+                {
+                    //User requests quit
+                    if( e.type == SDL_QUIT )
+                    {
+                        quit = 1;
+                    }
+                    else if( e.type == SDL_KEYDOWN )
+                    {
+                        //Select surfaces based on key press
+                        switch( e.key.keysym.sym )
+                        {
+                            case SDLK_q:
+                            quit = 1;
+                            break;
+                        }
+                    }
+                }
+            }
 
-	// Destroy the window. This will also destroy the surface
 	SDL_DestroyWindow( window );
-
-	// Quit SDL
 	SDL_Quit();
 	
-	// End the program
 	return 0;
 }
